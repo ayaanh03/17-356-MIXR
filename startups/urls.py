@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from mixr.views import mixr
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',mixr),
 ]
