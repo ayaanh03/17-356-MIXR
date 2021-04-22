@@ -18,11 +18,11 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 authe = firebase.auth()
-database=firebase.database()
+db=firebase.database()
 
 def mixr(request):
-    print(database.get().val())
-    return render(request,"Home.html",{"testval": database.get().val()})
+    # print(database.get().val())
+    return render(request,"Home.html")
 
 # Create your views here.
 from django.http import HttpResponse
@@ -35,8 +35,13 @@ def joinPrivate(request):
 
 def createRoom(request):
     context = {}
-    context['randAlphaNum'] = generateAlphaNum()
-    print(context['randAlphaNum'])
+    context['code'] = generateAlphaNum()
+    # Rooms = db.child("Rooms").get().val()
+    # db.child("Rooms").update({"abcd" : "bruh"})
+    # db.child("Rooms").child("bcda").get().val()
+    while db.child("Rooms").child(context['code']).get().val() != None :
+        context['code'] = generateAlphaNum()
+    db.child("Rooms").update({context['code'] : "bruh"})
     return render(request, 'createRoom.html', context=context)
 
 def hello(request):
