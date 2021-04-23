@@ -36,9 +36,7 @@ def joinPrivate(request):
 def createRoom(request):
     context = {}
     context['code'] = generateAlphaNum()
-    # Rooms = db.child("Rooms").get().val()
-    # db.child("Rooms").update({"abcd" : "bruh"})
-    # db.child("Rooms").child("bcda").get().val()
+    # checking for used Room code and generating a new one in case it was used. 
     while db.child("Rooms").child(context['code']).get().val() != None :
         context['code'] = generateAlphaNum()
     db.child("Rooms").update({context['code'] : "bruh"})
