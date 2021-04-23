@@ -1,15 +1,86 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <style>
+            html {
+                height: 100%;
+            }
+            header {
+                font-family: Georgia, serif;
+                font-weight: bold;
+                color: black;
+                font-size: 225px;
+                text-align: center;
+            }
+            body {
+                margin: 0;
+                height: 100%;
+                background-repeat: no-repeat;
+                background-image: linear-gradient(to bottom right, rgb(102, 153, 204), rgb(0, 248, 207));;
+                /* background-image: linear-gradient(to bottom right, rgb(30, 215, 76), yellow);; */
+            }
+            .Enter_code {
+                border: none;
+                outline: none;
+                padding: 10px 20px;
+                border-radius: 10px;
+                color: white;
+                margin-bottom: 50px;
+                position: relative;
+                font-family: Georgia, serif;
+                color: black;
+                font-size: 75px;
+                text-align: center;
+                text-decoration: none;
+                left: 31%;
+            }
+            .input_val {
+                border: none;
+                outline: none;
+                padding: 10px 20px;
+                border-radius: 10px;
+                /* background-color: rgb(31, 107, 31); */
+                background: rgb(26, 52, 78);
+                margin-bottom: 50px;
+                position: relative;
+                font-family: Georgia, serif;
+                color: white;
+                font-size: 75px;
+                text-align: center;
+                text-decoration: none;
+                left: 27.5%;
+            }
+            .buttons {
+                border: none;
+                outline: none;
+                padding: 10px 20px;
+                border-radius: 10px;
+                color: white;
+                /* background: rgb(1, 53, 1); */
+                background: rgb(26, 52, 78);
+                margin-bottom: 50px;
+                box-shadow: 0 3px 20px 0 #0000003b;
+                position: relative;
+                left: 45.4%;
+                font-family: Georgia, serif;
+                color: white;
+                font-size: 75px;
+                text-align: center;
+                text-decoration: none;
+            }
+        </style>
+    </head>
     <header>
-        <h1>MIXR</h1>
+        MIXR
     </header>
     <body>
-
         <form action="/mixr/joinPrivate/" method="post">
             {% csrf_token %}
-            <label for="code">Enter 4 Letter Code</label>
-            <input id="code" type="text" name="code" value="{{ code }}" maxlength="4">
-            <input type="submit" value="Join">
+            <label for="code" class="Enter_code">Enter 4 Letter Code:</label>
+            <br><br><br>
+            <input class="input_val" id="code" type="text" name="code" value="{{ code }}" maxlength="4">
+            <br><br>
+            <input type="submit" value="Join" class="buttons">
         </form>
     </body>
 </html>
