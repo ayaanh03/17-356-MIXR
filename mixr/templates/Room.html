@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+{% block javascript %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function() {
+        $('#query').keyup(function(){
+        document.getElementById("songs").innerHTML = document.getElementById("query").value;
+    })
+    })
+    
+</script>
+   {% endblock %}
 <html>
     <header>
         <h1>Room</h1>
@@ -7,46 +18,17 @@
 <h1>Test Room {{code}}</h1>
 <h2>Data : {{data}}</h2>
 <h2>Add Songs Below</h2>
-<input id="query" type="text" placeholder="Search..">
-<button onclick='send_value()'> search </button>
+<form method= "POST">
+{%csrf_token%}
+<input id="query" type="text" onkeyup="" placeholder="Search.."/>
+</form>
 <!-- in order to use jQueries vv -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>
-    
-    function send_value(){
-                $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                    }
-                }
-                });
-                $.ajax({
-                    
-                url: '',
-                method : 'POST',
-                data: {quantity: $('#query').val()},
-                beforeSend: function() {
 
-                 
-                },
-                success: function(response) {
-   
-                 alert(response)
-                 }
-                 });
-   }
-   </script>
 <!-- this part is kind of weirdly hardcoded but ig it's fine? -->
-<div>{{ songs.0 }}</div>
-<div>{{ songs.1 }}</div>
-<div>{{ songs.2 }}</div>
-<div>{{ songs.3 }}</div>
-<div>{{ songs.4 }}</div>
-<div>{{ songs.5 }}</div>
-<div>{{ songs.6 }}</div>
-<div>{{ songs.7 }}</div>
-<div>{{ songs.8 }}</div>
-<div>{{ songs.9 }}</div>
+<ul id="songs">
+{% for song in songs.values %}
+<li>{{song}}</li>
+{% endfor %}
+</ul>
     </body>
 </html>

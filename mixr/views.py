@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 import random
 import string
 import pyrebase
@@ -60,7 +60,7 @@ def createRoom(request):
     db.child("Rooms").update({context['code'] : "test"+generateAlphaNum()})
     return Room(request, context['code'])
 
-@csrf_exempt
+@csrf_protect
 def Room(request,code):
     t = db.child("Rooms").child(code).get().val()
     context = {}
