@@ -18,26 +18,39 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 authe = firebase.auth()
-database=firebase.database()
+db=firebase.database()
 
 def mixr(request):
-    print(database.get().val())
-    return render(request,"Home.html",{"testval": database.get().val()})
+    # print(database.get().val())
+    return render(request,"Home.html")
 
 # Create your views here.
 from django.http import HttpResponse
-
+from .forms import JoinForm
 def home(request):
     return render(request, 'home.html', {})
     
 def joinPrivate(request):
+    if request.method == 'POST':
+        form = JoinForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            return Room(request,form.cleaned_data['code'])
     return render(request, 'joinPrivate.html', {})
 
 def createRoom(request):
     context = {}
-    context['randAlphaNum'] = generateAlphaNum()
-    print(context['randAlphaNum'])
-    return render(request, 'createRoom.html', context=context)
+    context['code'] = generateAlphaNum()
+    # checking for used Room code and generating a new one in case it was used. 
+    while db.child("Rooms").child(context['code']).get().val() != None :
+        context['code'] = generateAlphaNum()
+    db.child("Rooms").update({context['code'] : "test"+generateAlphaNum()})
+    return Room(request, context['code'])
+
+
+def Room(request,code):
+    t = db.child("Rooms").child(code).get().val()
+    return render(request,'Room.html',{'code':code,'data' : t})
 
 def hello(request):
     return HttpResponse('hello world.')

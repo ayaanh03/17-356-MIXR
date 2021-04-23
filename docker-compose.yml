@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  17356mixr:
+    image: 17356mixr
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
