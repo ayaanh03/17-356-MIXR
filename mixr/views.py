@@ -1,8 +1,21 @@
 from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_exempt
 import random
 import string
 import pyrebase
+
+# Spotify Auth Stuff
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+import os
+
+scope = 'user-top-read'
+
+os.environ["SPOTIPY_CLIENT_ID"]='3833b3fffe714b61acb9e438b90dd25a'
+os.environ["SPOTIPY_CLIENT_SECRET"]='5f0e93275b254646b6ec8f277e2f7a6a'
+os.environ["SPOTIPY_REDIRECT_URI"]='http://127.0.0.1:3000/mixr/'
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 # Create your views here.
 config = {
@@ -47,10 +60,21 @@ def createRoom(request):
     db.child("Rooms").update({context['code'] : "test"+generateAlphaNum()})
     return Room(request, context['code'])
 
-
+@csrf_exempt
 def Room(request,code):
     t = db.child("Rooms").child(code).get().val()
-    return render(request,'Room.html',{'code':code,'data' : t})
+    context = {}
+    context['code'] = code
+    context['data'] = t
+    try:
+        query = request.POST['quantity']
+    except:
+        query = "a"
+    context['songs'] = {}
+    results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
+    for i, item in enumerate(results['tracks']['items']):
+        context['songs'][str(i)] = item['name']
+    return render(request,'Room.html',context)
 
 def hello(request):
     return HttpResponse('hello world.')
