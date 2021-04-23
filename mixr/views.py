@@ -26,11 +26,16 @@ def mixr(request):
 
 # Create your views here.
 from django.http import HttpResponse
-
+from .forms import JoinForm
 def home(request):
     return render(request, 'home.html', {})
     
 def joinPrivate(request):
+    if request.method == 'POST':
+        form = JoinForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            return Room(request,form.cleaned_data['code'])
     return render(request, 'joinPrivate.html', {})
 
 def createRoom(request):

@@ -4,12 +4,12 @@
         <h1>MIXR</h1>
     </header>
     <body>
-        <div>
-            <label>Enter 4 letter Code:</label>
-            <input type="text" maxlength="4">
-        </div>
-        <div>
-            <button>Join</button>
-        </div>
+
+        <form action="/mixr/joinPrivate/" method="post">
+            {% csrf_token %}
+            <label for="code">Enter 4 Letter Code</label>
+            <input id="code" type="text" name="code" value="{{ code }}" maxlength="4">
+            <input type="submit" value="Join">
+        </form>
     </body>
 </html>
