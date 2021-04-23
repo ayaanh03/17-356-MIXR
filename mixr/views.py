@@ -44,12 +44,13 @@ def createRoom(request):
     # checking for used Room code and generating a new one in case it was used. 
     while db.child("Rooms").child(context['code']).get().val() != None :
         context['code'] = generateAlphaNum()
-    db.child("Rooms").update({context['code'] : "bruh"})
+    db.child("Rooms").update({context['code'] : "test"+generateAlphaNum()})
     return Room(request, context['code'])
 
 
 def Room(request,code):
-    return render(request,'Room.html',{'code':code})
+    t = db.child("Rooms").child(code).get().val()
+    return render(request,'Room.html',{'code':code,'data' : t})
 
 def hello(request):
     return HttpResponse('hello world.')
