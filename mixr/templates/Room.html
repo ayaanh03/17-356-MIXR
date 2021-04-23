@@ -4,10 +4,15 @@
 <script>
     $(function() {
         $('#query').keyup(function(){
-        document.getElementById("songs").innerHTML = document.getElementById("query").value;
+        $.ajax({
+            type: 'GET',
+            url: 'search/'+$('#query').val(),
+            success: function(newData) {
+                document.getElementById("songs").innerHTML = newData
+            }
+        })
     })
     })
-    
 </script>
    {% endblock %}
 <html>
