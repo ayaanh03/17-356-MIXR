@@ -40,7 +40,11 @@ def createRoom(request):
     while db.child("Rooms").child(context['code']).get().val() != None :
         context['code'] = generateAlphaNum()
     db.child("Rooms").update({context['code'] : "bruh"})
-    return render(request, 'createRoom.html', context=context)
+    return Room(request, context['code'])
+
+
+def Room(request,code):
+    return render(request,'Room.html',{'code':code})
 
 def hello(request):
     return HttpResponse('hello world.')
