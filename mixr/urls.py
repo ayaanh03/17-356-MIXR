@@ -8,5 +8,5 @@ urlpatterns = [
     path('joinPrivate/', views.joinPrivate),
     path('createRoom.html', views.createRoom),
     path('Room/<str:code>/',views.Room),
-    path('search/<str:query>/',views.search),
+    path('search/<str:code>/<str:query>/',views.search),
 ]

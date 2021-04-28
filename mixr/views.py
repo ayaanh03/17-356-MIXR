@@ -76,13 +76,15 @@ def Room(request,code):
         context['songs'][str(i)] = item['name']
     return render(request,'Room.html',context)
 
-def search(request, query):
+def search(request, code, query):
     results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
     songs = {}
+    test = {}
     for i, item in enumerate(results['tracks']['items']):
-        songs[str(i)] = item['name']
-    print(songs)
-    return render(request,'search.html',{'songs': songs.values()})
+        songs[str(i)] = item['name']+" "+item['uri']
+        test[item['uri']] = item['name']
+    print(test)
+    return render(request,'search.html',{'songs': test,'code': code})
 
 
 

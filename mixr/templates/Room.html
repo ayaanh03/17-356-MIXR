@@ -6,7 +6,7 @@
         $('#query').keyup(function(){
         $.ajax({
             type: 'GET',
-            url: '/mixr/search/'+$('#query').val(),
+            url: '/mixr/search/{{code}}/'+$('#query').val(),
             success: function(newData) {
                 document.getElementById("songs").innerHTML = newData
             }
@@ -27,9 +27,7 @@
 {%csrf_token%}
 <input id="query" type="text" onkeyup="" placeholder="Search.."/>
 </form>
-<!-- in order to use jQueries vv -->
 
-<!-- this part is kind of weirdly hardcoded but ig it's fine? -->
 <ul id="songs">
 {% for song in songs.values %}
 <li>{{song}}</li>
