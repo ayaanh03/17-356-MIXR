@@ -42,7 +42,7 @@ from django.http import HttpResponse
 from .forms import JoinForm
 def home(request):
     return render(request, 'home.html', {})
-    
+
 def joinPrivate(request):
     if request.method == 'POST':
         form = JoinForm(request.POST)
@@ -54,7 +54,7 @@ def joinPrivate(request):
 def createRoom(request):
     context = {}
     context['code'] = generateAlphaNum()
-    # checking for used Room code and generating a new one in case it was used. 
+    # checking for used Room code and generating a new one in case it was used.
     while db.child("Rooms").child(context['code']).get().val() != None :
         context['code'] = generateAlphaNum()
     db.child("Rooms").update({context['code'] : "test"+generateAlphaNum()})
@@ -100,7 +100,6 @@ def Playlist(request):
     sp.playlist_add_items(playlist['id'], song_uris, position=None)
     return render(request, 'Playlist.html', {'songs': song_list})
 
-
 def hello(request):
     return HttpResponse('hello world.')
 
@@ -108,7 +107,3 @@ def generateAlphaNum():
     letters = string.ascii_lowercase
     result_str = ''.join(random.choice(letters) for i in range(4))
     return result_str
-
-
-
-
