@@ -2,4 +2,6 @@
 django
 # gunicorn
 Pyrebase
-spotipy
+spotipy >= 2.18
+requests >= 2.25
+jwt
