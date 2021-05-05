@@ -1,3 +1,4 @@
+
 {% for k,v in songs.items%}
 <!-- <li onclick="console.log('{{v}} {{k}} {{code}}');">{{v}}</li> -->
 <li onclick="$.ajax({
@@ -9,3 +10,8 @@
 })">{{v}}</li>
 
 {%endfor%}
+
+{% for song in songs%}
+<li>{{song}}</li>
+{%endfor%}
+
