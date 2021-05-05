@@ -1,0 +1,13 @@
+<script>
+    function plusVote(){
+        console.log("plus")
+    }
+    function minusVote(){
+        console.log("minus")
+    }
+</script>
+{% for k in results%}
+<li>{{k}}<button type="button" onClick="plusVote()">+</button><button type="button" onClick="minusVote()">-</button></li>
+{%endfor%}
+
+<!-- <l1>testval</l1> -->

@@ -57,7 +57,12 @@ def createRoom(request):
     # checking for used Room code and generating a new one in case it was used.
     while db.child("Rooms").child(context['code']).get().val() != None :
         context['code'] = generateAlphaNum()
-    db.child("Rooms").update({context['code'] : "test"+generateAlphaNum()})
+
+    # Associate a playlist with the room (name of playlist is the room code)
+    playlist = sp.user_playlist_create(sp.current_user()['id'], context['code'], public=False, 
+                                         collaborative=True, description='17356 bops')
+    db.child("Rooms").update({context['code'] : {'playlist_id':playlist['id']}})
+    
     return Room(request, context['code'])
 
 @csrf_protect
@@ -71,20 +76,53 @@ def Room(request,code):
     except:
         query = "a"
     context['songs'] = {}
+    # roomSongs should be pulled from database based on room code
+
+    # dict which has URI:songName
+
+    # pull curr songs from database
+    roomSongs = db.child("Rooms").child(code).child("songs")
+    # assuming roomSongs gets converted to a list of song uris:
+    # print(roomSongs.keys())
+
+    context['roomSongs'] = {'spotify:track:3bYRjffJlvaDWqeUqEjaUU': 'SDGAF', 
+                 'spotify:track:4FGpxdVFIhIVzRq8X64a1I': 'Sdgaf', 
+                 'spotify:track:0iCOMK0czjVWfgFeiqkvQT': 'Sunday 3pm - Reconstructed', 
+                 'spotify:track:7ugDr4fb1KWoLUGgJzoatK': 'Sunday 3pm - Kenji Club Remix', 
+                 'spotify:track:7xS6EPi3KX8PcxuNdOPxQ5': 'Miracle - Signfield Mix'}
     results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
     print(sp.current_user())
+    # sp.playlist_replace_items(t['playlist_id'], context['roomSongs'].keys())
+
+    #print(sp.current_user())
     for i, item in enumerate(results['tracks']['items']):
         context['songs'][str(i)] = item['name']
     return render(request,'Room.html',context)
 
 
-def search(request, query):
+def search(request,code, query):
     results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
     songs = {}
+    test = {}
     for i, item in enumerate(results['tracks']['items']):
-        songs[str(i)] = item['name']
-    print(songs)
-    return render(request,'search.html',{'songs': songs.values()})
+
+        songs[str(i)] = item['name']+" "+item['uri']
+        test[item['uri'].split(":")[2]] = item['name']
+    print(test)
+    return render(request,'search.html',{'songs': test,'code': code})
+
+
+def addsong(request, code, song):
+    db.child("Rooms").child(code).child("songs").child(song).set("0")
+    return render(request,'search.html')
+
+def getsongs(request,code):
+    songs = list(db.child("Rooms").child(code).child("songs").get().val().keys())
+    results = []
+    for song in songs:
+        results += [sp.track(song)['name']]
+    # print(results)
+    return render(request,"getsongs.html",{'results': results})
 
 
 def update_playlist(request, song, all_songs):
