@@ -82,12 +82,14 @@ def search(request, code, query):
     test = {}
     for i, item in enumerate(results['tracks']['items']):
         songs[str(i)] = item['name']+" "+item['uri']
-        test[item['uri']] = item['name']
+        test[item['uri'].split(":")[2]] = item['name']
     print(test)
     return render(request,'search.html',{'songs': test,'code': code})
 
 
-
+def addsong(request, code, song):
+    db.child("Rooms").child(code).child("songs").child(song).set("0")
+    return render(request,'search.html')
 
 def hello(request):
     return HttpResponse('hello world.')
