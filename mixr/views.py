@@ -86,6 +86,20 @@ def search(request, query):
     print(songs)
     return render(request,'search.html',{'songs': songs.values()})
 
+def Playlist(request):
+    # Hardcoded list of songs uris
+    song_dict = {'spotify:track:3bYRjffJlvaDWqeUqEjaUU': 'SDGAF', 
+                 'spotify:track:4FGpxdVFIhIVzRq8X64a1I': 'Sdgaf', 
+                 'spotify:track:0iCOMK0czjVWfgFeiqkvQT': 'Sunday 3pm - Reconstructed', 
+                 'spotify:track:7ugDr4fb1KWoLUGgJzoatK': 'Sunday 3pm - Kenji Club Remix', 
+                 'spotify:track:7xS6EPi3KX8PcxuNdOPxQ5': 'Miracle - Signfield Mix'}
+    song_uris = song_dict.keys()
+    song_list = song_dict.values()
+    playlist = sp.user_playlist_create(sp.current_user()['id'], '17356_playlist', public=False, 
+                                         collaborative=False, description='17356 bops')
+    sp.playlist_add_items(playlist['id'], song_uris, position=None)
+    return render(request, 'Playlist.html', {'songs': song_list})
+
 def hello(request):
     return HttpResponse('hello world.')
 
