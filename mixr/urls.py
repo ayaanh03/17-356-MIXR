@@ -6,8 +6,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     # path('/', views.hello, name='hello')
     path('joinPrivate/', views.joinPrivate),
-    path('createRoom', views.createRoom),
-    path('Room/<str:code>/',views.Room),
-    path('search/<str:query>/',views.search),
-    path('joinPrivate/Playlist/', views.Playlist)
+    path('createRoom/', views.createRoom),
+    path('Room/<str:code>/', views.Room),
+    path('search/<str:query>/', views.search),
+    path('Playlist/', views.Playlist),
+    # path('createRoom/Playlist/', views.Playlist)
 ]
