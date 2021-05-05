@@ -24,5 +24,5 @@ from mixr import views
 urlpatterns = [
     # path('', views.home, name='home'),
     # path('hi/', views.hello, name='hello'),
-    path('mixr/', include('mixr.urls'))
+    path('', include('mixr.urls'))
 ]
