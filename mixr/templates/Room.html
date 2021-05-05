@@ -16,7 +16,7 @@
     })
     setInterval(function () {$.ajax({
             type: 'GET',
-            url: '/getsongs/{{code}}/',
+            url: '/getsongs/{{code}}/{{host}}',
             success: function(newData) {
                 document.getElementById("added").innerHTML = newData
             }
@@ -80,7 +80,7 @@
     .Search {
         position: absolute;
         left: 30%;
-        top: 37%;
+        top: 50%;
         width: 30%;
         height: 5%;
         border: 2px solid;
