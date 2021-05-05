@@ -77,7 +77,14 @@ def Room(request,code):
         query = "a"
     context['songs'] = {}
     # roomSongs should be pulled from database based on room code
+
     # dict which has URI:songName
+
+    # pull curr songs from database
+    roomSongs = db.child("Rooms").child(code).child("songs")
+    # assuming roomSongs gets converted to a list of song uris:
+    # print(roomSongs.keys())
+
     context['roomSongs'] = {'spotify:track:3bYRjffJlvaDWqeUqEjaUU': 'SDGAF', 
                  'spotify:track:4FGpxdVFIhIVzRq8X64a1I': 'Sdgaf', 
                  'spotify:track:0iCOMK0czjVWfgFeiqkvQT': 'Sunday 3pm - Reconstructed', 
@@ -85,10 +92,12 @@ def Room(request,code):
                  'spotify:track:7xS6EPi3KX8PcxuNdOPxQ5': 'Miracle - Signfield Mix'}
     results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
     print(sp.current_user())
+    sp.playlist_replace_items(t['playlist_id'], context['roomSongs'].keys())
+
+    #print(sp.current_user())
     for i, item in enumerate(results['tracks']['items']):
         context['songs'][str(i)] = item['name']
     return render(request,'Room.html',context)
-
 
 
 def search(request,code, query):
@@ -96,6 +105,7 @@ def search(request,code, query):
     songs = {}
     test = {}
     for i, item in enumerate(results['tracks']['items']):
+
         songs[str(i)] = item['name']+" "+item['uri']
         test[item['uri'].split(":")[2]] = item['name']
     print(test)
