@@ -29,11 +29,13 @@
 </form>
 <!-- in order to use jQueries vv -->
 
-<!-- this part is kind of weirdly hardcoded but ig it's fine? -->
 <ul id="songs">
 {% for song in songs.values %}
 <li>{{song}}</li>
 {% endfor %}
 </ul>
+<div>
+    <button class="button1"><a href="Playlist" class="link">Export Playlist</a></button>
+</div>
     </body>
 </html>
