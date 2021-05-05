@@ -91,6 +91,14 @@ def addsong(request, code, song):
     db.child("Rooms").child(code).child("songs").child(song).set("0")
     return render(request,'search.html')
 
+def getsongs(request,code):
+    songs = list(db.child("Rooms").child(code).child("songs").get().val().keys())
+    results = []
+    for song in songs:
+        results += [sp.track(song)['name']]
+    # print(results)
+    return render(request,"getsongs.html",{'results': results})
+
 def hello(request):
     return HttpResponse('hello world.')
 

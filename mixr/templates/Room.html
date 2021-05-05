@@ -12,6 +12,13 @@
             }
         })
     })
+    setInterval(function () {$.ajax({
+            type: 'GET',
+            url: '/mixr/getsongs/{{code}}/',
+            success: function(newData) {
+                document.getElementById("added").innerHTML = newData
+            }
+        })},1000)
     })
 </script>
    {% endblock %}
@@ -33,5 +40,10 @@
 <li>{{song}}</li>
 {% endfor %}
 </ul>
+<br/>
+<h3>Added songs</h3>
+<ul id="added">
+    <li>test</li>
+    </ul>
     </body>
 </html>
