@@ -95,13 +95,30 @@ def Room(request,code):
     return render(request,'Room.html',context)
 
 
+
 def search(request, query):
     results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
     songs = {}
+    test = {}
     for i, item in enumerate(results['tracks']['items']):
-        songs[str(i)] = item['name']
-    print(songs)
-    return render(request,'search.html',{'songs': songs.values()})
+
+        songs[str(i)] = item['name']+" "+item['uri']
+        test[item['uri'].split(":")[2]] = item['name']
+    print(test)
+    return render(request,'search.html',{'songs': test,'code': code})
+
+
+def addsong(request, code, song):
+    db.child("Rooms").child(code).child("songs").child(song).set("0")
+    return render(request,'search.html')
+
+def getsongs(request,code):
+    songs = list(db.child("Rooms").child(code).child("songs").get().val().keys())
+    results = []
+    for song in songs:
+        results += [sp.track(song)['name']]
+    # print(results)
+    return render(request,"getsongs.html",{'results': results})
 
 def Playlist(request):
     # Hardcoded list of songs uris
@@ -116,6 +133,7 @@ def Playlist(request):
                                          collaborative=False, description='17356 bops')
     sp.playlist_add_items(playlist['id'], song_uris, position=None)
     return render(request, 'Playlist.html', {'songs': song_list})
+
 
 def hello(request):
     return HttpResponse('hello world.')

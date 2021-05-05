@@ -6,12 +6,20 @@
         $('#query').keyup(function(){
         $.ajax({
             type: 'GET',
+            url: '/mixr/search/{{code}}/'+$('#query').val(),
             url: '/search/'+$('#query').val(),
             success: function(newData) {
                 document.getElementById("songs").innerHTML = newData
             }
         })
     })
+    setInterval(function () {$.ajax({
+            type: 'GET',
+            url: '/mixr/getsongs/{{code}}/',
+            success: function(newData) {
+                document.getElementById("added").innerHTML = newData
+            }
+        })},1000)
     })
     function plusVote(){
         console.log("plus")
@@ -33,13 +41,17 @@
 {%csrf_token%}
 <input id="query" type="text" onkeyup="" placeholder="Search.."/>
 </form>
-<!-- in order to use jQueries vv -->
 
 <ul id="songs">
 {% for song in songs.values %}
 <li>{{song}}</li>
 {% endfor %}
 </ul>
+<br/>
+<h3>Added songs</h3>
+<ul id="added">
+    <li>test</li>
+    </ul>
 <div>
     <button class="button1"><a href="Playlist" class="link">Export Playlist</a></button>
 </div>
