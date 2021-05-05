@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<html>
+<head>
 {% block javascript %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
@@ -27,21 +29,114 @@
         console.log("minus")
     }
 </script>
-   {% endblock %}
-<html>
+{% endblock %}
+<style>
+    html {
+        height: 100%;
+    }
+    header {
+        font-family: Georgia, serif;
+        font-weight: bold;
+        color: black;
+        font-size: 175px;
+        text-align: center;
+    }
+    body {
+        margin: 0;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-image: linear-gradient(to bottom right, rgb(102, 153, 204), rgb(0, 248, 207));;
+        /* background-image: linear-gradient(to bottom right, rgb(30, 215, 76), yellow);; */
+    }
+    .Code_data {
+        border: none;
+        outline: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: white;
+        /* margin-bottom: 5px; */
+        position: relative;
+        left: 12%;
+        font-family: Georgia, serif;
+        color: black;
+        font-size: 25px;
+        text-align: Left;
+        text-decoration: none;  
+    }
+    .Add_songs {
+        border: none;
+        outline: none;
+        padding: 10px -10px;
+        color: white;
+        margin-bottom: 10px;
+        position: relative;
+        left: 13%;
+        font-family: Georgia, serif;
+        color: black;
+        font-size: 25px;
+        text-align: Left;
+        text-decoration: none;
+    }
+    .Search {
+        position: absolute;
+        left: 30%;
+        top: 37%;
+        width: 30%;
+        height: 5%;
+        border: 2px solid;
+        border-radius: 4px;
+        border-color: black;
+        background: rgb(26, 52, 78);
+        color: white;
+        font-family: Georgia, serif;
+        font-size: 35px;
+        text-align: center;
+        text-decoration: none;
+    }
+    .songs {
+        color: black;
+        font-family: Georgia, serif;
+        font-size: 25px;
+        text-align: left;
+        position: relative;
+        left: 28%;
+    }
+    .buttons {
+        border: none;
+        outline: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: white;
+        background: rgb(26, 52, 78);
+        position: relative;
+        left: 29%;
+        font-family: Georgia, serif;
+        font-size: 25px;
+        text-align: center;
+        text-decoration: none;
+    }
+    .link {
+        color: white;
+    }
+</style>
+</head>
     <header>
-        <h1>Room</h1>
+        Personal Room
     </header>
     <body>
-<h1>Test Room {{code}}</h1>
-<h2>Data : {{data}}</h2>
-<h2>Add Songs Below</h2>
+<div class="Code_data">
+    <h2>Test Room: {{code}} , Data : {{data}}</h2>
+</div>
+<div class="Add_songs">
+    <h2>Add Songs:</h2>
+</div>
 <form method= "POST">
 {%csrf_token%}
-<input id="query" type="text" onkeyup="" placeholder="Search.."/>
+<input id="query" type="text" onkeyup="" placeholder="Search..." class="Search"/>
 </form>
+<!-- in order to use jQueries vv -->
+<ul id="songs" class="songs">
 
-<ul id="songs">
 {% for song in songs.values %}
 <li>{{song}}</li>
 {% endfor %}
@@ -52,7 +147,7 @@
     <li>test</li>
     </ul>
 <div>
-    <button class="button1"><a href="Playlist" class="link">Export Playlist</a></button>
+    <button class="buttons"><a href="Playlist" class="link">Export Playlist</a></button>
 </div>
 <h2> Songs Currently in Room</h2>
 <ul id="roomSongs">
