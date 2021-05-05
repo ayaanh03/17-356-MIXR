@@ -1,17 +1,11 @@
 
 {% for k,v in songs.items%}
-<!-- <li onclick="console.log('{{v}} {{k}} {{code}}');">{{v}}</li> -->
 <li onclick="$.ajax({
     type: 'GET',
-    url: '/mixr/add/{{code}}/{{k}}/',
+    url: '/add/{{code}}/{{k}}/',
     success: function() {
-        // console.log({{k}});
     }
 })">{{v}}</li>
 
-{%endfor%}
-
-{% for song in songs%}
-<li>{{song}}</li>
 {%endfor%}
 

@@ -6,8 +6,7 @@
         $('#query').keyup(function(){
         $.ajax({
             type: 'GET',
-            url: '/mixr/search/{{code}}/'+$('#query').val(),
-            url: '/search/'+$('#query').val(),
+            url: '/search/{{code}}/'+$('#query').val(),
             success: function(newData) {
                 document.getElementById("songs").innerHTML = newData
             }
@@ -15,7 +14,7 @@
     })
     setInterval(function () {$.ajax({
             type: 'GET',
-            url: '/mixr/getsongs/{{code}}/',
+            url: '/getsongs/{{code}}/',
             success: function(newData) {
                 document.getElementById("added").innerHTML = newData
             }
