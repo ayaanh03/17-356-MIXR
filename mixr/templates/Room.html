@@ -6,7 +6,7 @@
         $('#query').keyup(function(){
         $.ajax({
             type: 'GET',
-            url: '/mixr/search/{{code}}/'+$('#query').val(),
+            url: '/search/{{code}}/'+$('#query').val(),
             success: function(newData) {
                 document.getElementById("songs").innerHTML = newData
             }
@@ -14,12 +14,18 @@
     })
     setInterval(function () {$.ajax({
             type: 'GET',
-            url: '/mixr/getsongs/{{code}}/',
+            url: '/getsongs/{{code}}/',
             success: function(newData) {
                 document.getElementById("added").innerHTML = newData
             }
         })},1000)
     })
+    function plusVote(){
+        console.log("plus")
+    }
+    function minusVote(){
+        console.log("minus")
+    }
 </script>
    {% endblock %}
 <html>
@@ -45,5 +51,16 @@
 <ul id="added">
     <li>test</li>
     </ul>
+<div>
+    <button class="button1"><a href="Playlist" class="link">Export Playlist</a></button>
+</div>
+<h2> Songs Currently in Room</h2>
+<ul id="roomSongs">
+    {% for roomSong in roomSongs.values %}
+    <li>{{roomSong}} <button type="button" onClick="plusVote()">+</button><button type="button" onClick="minusVote()">-</button></li>
+    
+    {% endfor %}
+</ul>
+
     </body>
 </html>
