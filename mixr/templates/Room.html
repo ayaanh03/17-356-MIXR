@@ -149,13 +149,6 @@
 <div>
     <button class="buttons"><a href="Playlist" class="link">Export Playlist</a></button>
 </div>
-<h2> Songs Currently in Room</h2>
-<ul id="roomSongs">
-    {% for roomSong in roomSongs.values %}
-    <li>{{roomSong}} <button type="button" onClick="plusVote()">+</button><button type="button" onClick="minusVote()">-</button></li>
-    
-    {% endfor %}
-</ul>
 
     </body>
 </html>

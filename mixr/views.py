@@ -92,7 +92,7 @@ def Room(request,code):
                  'spotify:track:7xS6EPi3KX8PcxuNdOPxQ5': 'Miracle - Signfield Mix'}
     results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
     print(sp.current_user())
-    sp.playlist_replace_items(t['playlist_id'], context['roomSongs'].keys())
+    # sp.playlist_replace_items(t['playlist_id'], context['roomSongs'].keys())
 
     #print(sp.current_user())
     for i, item in enumerate(results['tracks']['items']):
