@@ -69,9 +69,10 @@ def createRoom(request):
 @csrf_protect
 def Room(request,code, host):
     # Int representing whether host or not
-    context['host'] = host
+    
     t = db.child("Rooms").child(code).get().val()
     context = {}
+    context['host'] = host
     context['code'] = code
     context['data'] = t
     try:
