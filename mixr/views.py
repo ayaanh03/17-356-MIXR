@@ -87,7 +87,7 @@ def search(request, query):
 def update_playlist(request, song, all_songs):
     all_songs[song] += 1
     {k: v for k, v in sorted(all_songs.items(), key=lambda item: item[1]).reverse()}
-    return render(request, 'update_list.html', all_songs)
+    return render(request, 'update_playlist.html', all_songs)
 
 def hello(request):
     return HttpResponse('hello world.')
