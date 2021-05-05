@@ -9,7 +9,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import os
 
-scope = 'user-top-read user-library-read playlist-modify-private'
+scope = 'user-top-read user-library-read playlist-modify-public'
 
 # os.environ["SPOTIPY_CLIENT_ID"]='3833b3fffe714b61acb9e438b90dd25a'
 # os.environ["SPOTIPY_CLIENT_SECRET"]='5f0e93275b254646b6ec8f277e2f7a6a'
