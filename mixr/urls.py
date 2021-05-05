@@ -9,4 +9,5 @@ urlpatterns = [
     path('createRoom', views.createRoom),
     path('Room/<str:code>/',views.Room),
     path('search/<str:query>/',views.search),
+    path('joinPrivate/Playlist/', views.Playlist)
 ]
