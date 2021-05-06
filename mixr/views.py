@@ -69,7 +69,7 @@ def createRoom(request):
 @csrf_protect
 def Room(request,code, host):
     # Int representing whether host or not
-    
+
     t = db.child("Rooms").child(code).get().val()
     context = {}
     context['host'] = host
@@ -87,11 +87,7 @@ def Room(request,code, host):
         # assuming roomSongs gets converted to a list of song uris:
         # print(roomSongs.keys())
 
-        context['roomSongs'] = {'spotify:track:3bYRjffJlvaDWqeUqEjaUU': 'SDGAF',
-                     'spotify:track:4FGpxdVFIhIVzRq8X64a1I': 'Sdgaf',
-                     'spotify:track:0iCOMK0czjVWfgFeiqkvQT': 'Sunday 3pm - Reconstructed',
-                     'spotify:track:7ugDr4fb1KWoLUGgJzoatK': 'Sunday 3pm - Kenji Club Remix',
-                     'spotify:track:7xS6EPi3KX8PcxuNdOPxQ5': 'Miracle - Signfield Mix'}
+        context['roomSongs'] = roomSongs
         results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
         print(sp.current_user())
         # sp.playlist_replace_items(t['playlist_id'], context['roomSongs'].keys())
@@ -125,24 +121,56 @@ def addsong(request, code, song):
 def getsongs(request,code, host):
     # host is 1 or 0 depending on true or false
     t = db.child("Rooms").child(code).get().val()
-    
     songs = list(db.child("Rooms").child(code).child("songs").get().val().keys())
+
     results = []
     uris = []
+    all_songs = {}
     for song in songs:
+        all_songs[song] = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
+    all_songs = {k: v for k, v in sorted(all_songs.items(), key=lambda item: item[1])[::-1]}
+    print(all_songs)
+
+    for song in all_songs:
         results += [sp.track(song)['name']]
         uris += [sp.track(song)['uri']]
     if host:
         sp.playlist_replace_items(t['playlist_id'], uris)
-    # print(results)
-    return render(request,"getsongs.html",{'results': results})
+    final = {}
+    for i in range(len(results)):
+        final[results[i]] = songs[i]
+    return render(request,"getsongs.html",{'results': final, 'code':code, 'host' : host})
 
 
-def update_playlist(request, song, all_songs):
-    all_songs[song] += 1
-    {k: v for k, v in sorted(all_songs.items(), key=lambda item: item[1]).reverse()}
-    ###
-    return render(request, 'update_playlist.html', all_songs)
+def update_playlist(request, code, song, up_or_down, host):
+    t = db.child("Rooms").child(code).get().val()
+    print(sp.track(song)['name'])
+    songs = list(db.child("Rooms").child(code).child("songs").get().val().keys())
+    current_count = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
+    if (up_or_down == "up"):
+        current_count += 1
+    else:
+        current_count -= 1
+
+    db.child("Rooms").child(code).child("songs").child(song).set(str(current_count))
+
+    all_songs = {}
+    for song in songs:
+        all_songs[song] = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
+
+    all_songs2 = {k: v for k, v in sorted(all_songs.items(), key=lambda item: item[1])[::-1]}
+    results = []
+    uris = []
+    for song in all_songs2:
+        results += [sp.track(song)['name']]
+        uris += [sp.track(song)['uri']]
+    if host:
+        sp.playlist_replace_items(t['playlist_id'], uris)
+
+    final = {}
+    for i in range(len(results)):
+        final[results[i]] = songs[i]
+    return render(request, 'getsongs.html', {'results': final, 'code':code, 'host' : host})
 
 def Playlist(request):
     # Hardcoded list of songs uris
