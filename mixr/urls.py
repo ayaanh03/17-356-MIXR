@@ -10,7 +10,7 @@ urlpatterns = [
     path('Room/<str:code>/',views.Room),
     path('search/<str:code>/<str:query>/',views.search),
     path('add/<str:code>/<str:song>/',views.addsong),
-    path('getsongs/<str:code>/',views.getsongs),
+    path('getsongs/<str:code>/<int:host>',views.getsongs),
     path('Playlist/', views.Playlist),
     # path('createRoom/Playlist/', views.Playlist)
 ]

@@ -48,7 +48,7 @@ def joinPrivate(request):
         form = JoinForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data)
-            return Room(request,form.cleaned_data['code'])
+            return Room(request,form.cleaned_data['code'], 0)
     return render(request, 'joinPrivate.html', {})
 
 def createRoom(request):
@@ -63,12 +63,16 @@ def createRoom(request):
                                          collaborative=True, description='17356 bops')
     db.child("Rooms").update({context['code'] : {'playlist_id':playlist['id']}})
 
-    return Room(request, context['code'])
+    # From createRoom, host is true
+    return Room(request, context['code'], 1)
 
 @csrf_protect
-def Room(request,code):
+def Room(request,code, host):
+    # Int representing whether host or not
+    
     t = db.child("Rooms").child(code).get().val()
     context = {}
+    context['host'] = host
     context['code'] = code
     context['data'] = t
     try:
@@ -102,7 +106,6 @@ def Room(request,code):
         return render(request, 'Room.html', context)
 
 
-
 def search(request,code, query):
     results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
     songs = {}
@@ -119,11 +122,18 @@ def addsong(request, code, song):
     db.child("Rooms").child(code).child("songs").child(song).set("0")
     return render(request,'search.html')
 
-def getsongs(request,code):
+def getsongs(request,code, host):
+    # host is 1 or 0 depending on true or false
+    t = db.child("Rooms").child(code).get().val()
+    
     songs = list(db.child("Rooms").child(code).child("songs").get().val().keys())
     results = []
+    uris = []
     for song in songs:
         results += [sp.track(song)['name']]
+        uris += [sp.track(song)['uri']]
+    if host:
+        sp.playlist_replace_items(t['playlist_id'], uris)
     # print(results)
     return render(request,"getsongs.html",{'results': results})
 
