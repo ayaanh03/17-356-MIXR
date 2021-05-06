@@ -48,7 +48,7 @@ def joinPrivate(request):
         form = JoinForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data)
-            return Room(request,form.cleaned_data['code'])
+            return Room(request,form.cleaned_data['code'], 0)
     return render(request, 'joinPrivate.html', {})
 
 def createRoom(request):
@@ -63,12 +63,16 @@ def createRoom(request):
                                          collaborative=True, description='17356 bops')
     db.child("Rooms").update({context['code'] : {'playlist_id':playlist['id']}})
     
-    return Room(request, context['code'])
+    # From createRoom, host is true
+    return Room(request, context['code'], 1)
 
 @csrf_protect
-def Room(request,code):
+def Room(request,code, host):
+    # Int representing whether host or not
+    
     t = db.child("Rooms").child(code).get().val()
     context = {}
+    context['host'] = host
     context['code'] = code
     context['data'] = t
     try:
@@ -76,27 +80,12 @@ def Room(request,code):
     except:
         query = "a"
     context['songs'] = {}
-    # roomSongs should be pulled from database based on room code
 
-    # dict which has URI:songName
-
-    # pull curr songs from database
-    roomSongs = db.child("Rooms").child(code).child("songs")
-    # assuming roomSongs gets converted to a list of song uris:
-    # print(roomSongs.keys())
-
-    context['roomSongs'] = {'spotify:track:3bYRjffJlvaDWqeUqEjaUU': 'SDGAF', 
-                 'spotify:track:4FGpxdVFIhIVzRq8X64a1I': 'Sdgaf', 
-                 'spotify:track:0iCOMK0czjVWfgFeiqkvQT': 'Sunday 3pm - Reconstructed', 
-                 'spotify:track:7ugDr4fb1KWoLUGgJzoatK': 'Sunday 3pm - Kenji Club Remix', 
-                 'spotify:track:7xS6EPi3KX8PcxuNdOPxQ5': 'Miracle - Signfield Mix'}
     results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
-    print(sp.current_user())
-    # sp.playlist_replace_items(t['playlist_id'], context['roomSongs'].keys())
 
-    #print(sp.current_user())
     for i, item in enumerate(results['tracks']['items']):
         context['songs'][str(i)] = item['name']
+    
     return render(request,'Room.html',context)
 
 
@@ -116,11 +105,18 @@ def addsong(request, code, song):
     db.child("Rooms").child(code).child("songs").child(song).set("0")
     return render(request,'search.html')
 
-def getsongs(request,code):
+def getsongs(request,code, host):
+    # host is 1 or 0 depending on true or false
+    t = db.child("Rooms").child(code).get().val()
+    
     songs = list(db.child("Rooms").child(code).child("songs").get().val().keys())
     results = []
+    uris = []
     for song in songs:
         results += [sp.track(song)['name']]
+        uris += [sp.track(song)['uri']]
+    if host:
+        sp.playlist_replace_items(t['playlist_id'], uris)
     # print(results)
     return render(request,"getsongs.html",{'results': results})
 
