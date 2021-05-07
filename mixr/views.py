@@ -75,6 +75,7 @@ def Room(request,code, host):
     context['host'] = host
     context['code'] = code
     context['data'] = t
+    context['playlist'] = t['playlist_id']
     try:
         query = request.POST['quantity']
         context['songs'] = {}
@@ -87,13 +88,7 @@ def Room(request,code, host):
         # assuming roomSongs gets converted to a list of song uris:
         # print(roomSongs.keys())
 
-        context['roomSongs'] = {'spotify:track:3bYRjffJlvaDWqeUqEjaUU': 'SDGAF',
-                     'spotify:track:4FGpxdVFIhIVzRq8X64a1I': 'Sdgaf',
-                     'spotify:track:0iCOMK0czjVWfgFeiqkvQT': 'Sunday 3pm - Reconstructed',
-                     'spotify:track:7ugDr4fb1KWoLUGgJzoatK': 'Sunday 3pm - Kenji Club Remix',
-                     'spotify:track:7xS6EPi3KX8PcxuNdOPxQ5': 'Miracle - Signfield Mix'}
         results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
-        print(sp.current_user())
         # sp.playlist_replace_items(t['playlist_id'], context['roomSongs'].keys())
 
         #print(sp.current_user())
@@ -102,7 +97,6 @@ def Room(request,code, host):
         return render(request,'Room.html',context)
     except:
         context['songs'] = {}
-        context['roomSongs'] = {}
         return render(request, 'Room.html', context)
 
 
