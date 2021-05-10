@@ -129,11 +129,9 @@ def getsongs(request,code, host):
     for i, song in enumerate(songs):
         all_songs[(song,i)] = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
     all_songs = {k: v for k, v in sorted(all_songs.items(), key=lambda item: item[1])[::-1]}
-    print(all_songs)
 
     final_songs = []
     for (song, i) in all_songs:
-        print(song)
         results += [sp.track(song)['name']]
         uris += [sp.track(song)['uri']]
         final_songs.append(song)
@@ -147,7 +145,6 @@ def getsongs(request,code, host):
 
 def update_playlist(request, code, song, up_or_down, host):
     t = db.child("Rooms").child(code).get().val()
-    print(sp.track(song)['name'])
     songs = list(db.child("Rooms").child(code).child("songs").get().val().keys())
     current_count = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
     if (up_or_down == "up"):
@@ -157,22 +154,24 @@ def update_playlist(request, code, song, up_or_down, host):
 
     db.child("Rooms").child(code).child("songs").child(song).set(str(current_count))
 
-    all_songs = {}
-    for song in songs:
-        all_songs[song] = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
-
-    all_songs2 = {k: v for k, v in sorted(all_songs.items(), key=lambda item: item[1])[::-1]}
     results = []
     uris = []
-    for song in all_songs2:
+    all_songs = {}
+    for i, song in enumerate(songs):
+        all_songs[(song,i)] = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
+    all_songs = {k: v for k, v in sorted(all_songs.items(), key=lambda item: item[1])[::-1]}
+
+    final_songs = []
+    for (song, i) in all_songs:
+        print(song)
         results += [sp.track(song)['name']]
         uris += [sp.track(song)['uri']]
+        final_songs.append(song)
     if host:
         sp.playlist_replace_items(t['playlist_id'], uris)
-
     final = {}
     for i in range(len(results)):
-        final[results[i]] = songs[i]
+        final[results[i]] = final_songs[i]
     return render(request, 'getsongs.html', {'results': final, 'code':code, 'host' : host})
 
 def Playlist(request):
