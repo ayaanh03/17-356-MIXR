@@ -126,19 +126,22 @@ def getsongs(request,code, host):
     results = []
     uris = []
     all_songs = {}
-    for song in songs:
-        all_songs[song] = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
+    for i, song in enumerate(songs):
+        all_songs[(song,i)] = int(db.child("Rooms").child(code).child("songs").child(song).get().val())
     all_songs = {k: v for k, v in sorted(all_songs.items(), key=lambda item: item[1])[::-1]}
     print(all_songs)
 
-    for song in all_songs:
+    final_songs = []
+    for (song, i) in all_songs:
+        print(song)
         results += [sp.track(song)['name']]
         uris += [sp.track(song)['uri']]
+        final_songs.append(song)
     if host:
         sp.playlist_replace_items(t['playlist_id'], uris)
     final = {}
     for i in range(len(results)):
-        final[results[i]] = songs[i]
+        final[results[i]] = final_songs[i]
     return render(request,"getsongs.html",{'results': final, 'code':code, 'host' : host})
 
 
