@@ -12,5 +12,6 @@ urlpatterns = [
     path('add/<str:code>/<str:song>/',views.addsong),
     path('getsongs/<str:code>/<int:host>',views.getsongs),
     path('Playlist/', views.Playlist),
+    path('update_playlist/<str:code>/<str:song>/<str:up_or_down>/<int:host>', views.update_playlist)
     # path('createRoom/Playlist/', views.Playlist)
 ]
