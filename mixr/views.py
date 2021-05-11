@@ -75,6 +75,7 @@ def Room(request,code, host):
     context['host'] = host
     context['code'] = code
     context['data'] = t
+    context['playlist'] = t['playlist_id']
     try:
         query = request.POST['quantity']
         context['songs'] = {}
@@ -87,9 +88,8 @@ def Room(request,code, host):
         # assuming roomSongs gets converted to a list of song uris:
         # print(roomSongs.keys())
 
-        context['roomSongs'] = roomSongs
+
         results = sp.search(q=query, limit=10, offset=0, type='track', market=None)
-        print(sp.current_user())
         # sp.playlist_replace_items(t['playlist_id'], context['roomSongs'].keys())
 
         #print(sp.current_user())
@@ -98,7 +98,6 @@ def Room(request,code, host):
         return render(request,'Room.html',context)
     except:
         context['songs'] = {}
-        context['roomSongs'] = {}
         return render(request, 'Room.html', context)
 
 
