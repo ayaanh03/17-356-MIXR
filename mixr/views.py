@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_protect
 import random
 import string
@@ -64,7 +64,7 @@ def createRoom(request):
     db.child("Rooms").update({context['code'] : {'playlist_id':playlist['id']}})
 
     # From createRoom, host is true
-    return Room(request, context['code'], 1)
+    return redirect('/Room/'+context['code']+"/1")
 
 @csrf_protect
 def Room(request,code, host):
@@ -75,7 +75,10 @@ def Room(request,code, host):
     context['host'] = host
     context['code'] = code
     context['data'] = t
-    context['playlist'] = t['playlist_id']
+    try:
+        context['playlist'] = t['playlist_id']
+    except:
+        return redirect('/joinPrivate/')
     try:
         query = request.POST['quantity']
         context['songs'] = {}
