@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_protect
 import random
 import string
@@ -7,6 +7,7 @@ import pyrebase
 # Spotify Auth Stuff
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+import spotipy.util as util
 import os
 
 scope = 'user-top-read user-library-read playlist-modify-private'
@@ -14,9 +15,9 @@ scope = 'user-top-read user-library-read playlist-modify-private'
 # os.environ["SPOTIPY_CLIENT_ID"]='3833b3fffe714b61acb9e438b90dd25a'
 # os.environ["SPOTIPY_CLIENT_SECRET"]='5f0e93275b254646b6ec8f277e2f7a6a'
 # os.environ["SPOTIPY_REDIRECT_URI"]='http://127.0.0.1:3000/mixr/'
-
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,client_id = '3833b3fffe714b61acb9e438b90dd25a',client_secret= '5f0e93275b254646b6ec8f277e2f7a6a',redirect_uri= 'http://127.0.0.1:3000/mixr/'))
 print("Scope",scope)
+
 # Create your views here.
 config = {
   "apiKey": "AIzaSyDOAMIg3T_NToCDwqhNRTXKWXCuaRn6O9Q",
@@ -34,7 +35,6 @@ authe = firebase.auth()
 db=firebase.database()
 
 def mixr(request):
-    # print(database.get().val())
     return render(request,"Home.html")
 
 # Create your views here.
@@ -64,7 +64,7 @@ def createRoom(request):
     db.child("Rooms").update({context['code'] : {'playlist_id':playlist['id']}})
 
     # From createRoom, host is true
-    return Room(request, context['code'], 1)
+    return redirect('/Room/'+context['code']+"/1")
 
 @csrf_protect
 def Room(request,code, host):
@@ -75,7 +75,10 @@ def Room(request,code, host):
     context['host'] = host
     context['code'] = code
     context['data'] = t
-    context['playlist'] = t['playlist_id']
+    try:
+        context['playlist'] = t['playlist_id']
+    except:
+        return redirect('/joinPrivate/')
     try:
         query = request.POST['quantity']
         context['songs'] = {}

@@ -2,7 +2,7 @@
 <html>
 <head>
 {% block javascript %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
     $(function() {
         $('#query').keyup(function(){
@@ -146,8 +146,7 @@
 <ul id="added">
 </ul>
 <div>
-    <button class="buttons"><a href="https://open.spotify.com/playlist/{{playlist}}" class="link">View Playlist in Spotify</a></button>
+    <button class="buttons"><a href="https://open.spotify.com/playlist/{{playlist}}" target="_blank" class="link">View Playlist in Spotify</a></button>
 </div>
-
     </body>
 </html>
