@@ -40,12 +40,15 @@
         color: black;
         font-size: 175px;
         text-align: center;
+        position: absolute;
+        left: 190px;
     }
     body {
         margin: 0;
         height: 100%;
         background-repeat: no-repeat;
         background-image: linear-gradient(to bottom right, rgb(102, 153, 204), rgb(0, 248, 207));;
+        /* position: absolute; */
         /* background-image: linear-gradient(to bottom right, rgb(30, 215, 76), yellow);; */
     }
     .Code_data {
@@ -55,8 +58,9 @@
         border-radius: 10px;
         color: white;
         /* margin-bottom: 5px; */
-        position: relative;
-        left: 12%;
+        position: absolute;
+        left: 20px;
+        top: 200px;
         font-family: Georgia, serif;
         color: black;
         font-size: 25px;
@@ -69,8 +73,9 @@
         padding: 10px -10px;
         color: white;
         margin-bottom: 10px;
-        position: relative;
-        left: 13%;
+        position: absolute;
+        top: 320px;
+        left: 50px;
         font-family: Georgia, serif;
         color: black;
         font-size: 25px;
@@ -79,8 +84,8 @@
     }
     .Search {
         position: absolute;
-        left: 30%;
-        top: 50%;
+        left: 320px;
+        top: 350px;
         width: 30%;
         height: 5%;
         border: 2px solid;
@@ -98,25 +103,56 @@
         font-family: Georgia, serif;
         font-size: 25px;
         text-align: left;
-        position: relative;
-        left: 28%;
+        position: absolute;
+        left: 60px;
+        top: 410px;
+    }
+    .songs:hover {
+        cursor: pointer;
     }
     .buttons {
         border: none;
         outline: none;
-        padding: 10px 20px;
+        width: 300px;
+        height: 35px;
+        padding: 10px 5px;
         border-radius: 10px;
-        color: white;
+        color: black;
         background: rgb(26, 52, 78);
-        position: relative;
-        left: 29%;
+        position: absolute;
+        left: 400px;
+        top: 250px;
         font-family: Georgia, serif;
-        font-size: 25px;
+        font-size: 20px;
         text-align: center;
         text-decoration: none;
     }
     .link {
         color: white;
+    }
+    .added_songs {
+        border: none;
+        outline: none;
+        padding: 10px -10px;
+        color: white;
+        margin-bottom: 10px;
+        position: absolute;
+        top: 320px;
+        left: 980px;
+        font-family: Georgia, serif;
+        color: black;
+        font-size: 32px;
+        text-align: Left;
+        text-decoration: none;
+    }
+    .list_of_songs {
+        color: black;
+        font-family: Georgia, serif;
+        font-size: 25px;
+        text-align: left;
+        position: absolute;
+        left: 300px;
+        top: 410px;
     }
 </style>
 </head>
@@ -136,18 +172,18 @@
 </form>
 <!-- in order to use jQueries vv -->
 <ul id="songs" class="songs">
-
 {% for song in songs.values %}
 <li>{{song}}</li>
 {% endfor %}
 </ul>
 <br/>
-<h3>Added songs</h3>
+<div class="added_songs">
+    <h3>Added Songs:</h3>
+</div>
 <ul id="added">
 </ul>
 <div>
     <button class="buttons"><a href="https://open.spotify.com/playlist/{{playlist}}" class="link">View Playlist in Spotify</a></button>
 </div>
-
     </body>
 </html>
