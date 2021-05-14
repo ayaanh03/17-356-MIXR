@@ -1,72 +1,44 @@
 <!DOCTYPE html>
 <html>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+
     <head>
         <style>
             html {
                 height: 100%;
             }
             header {
-                font-family: Georgia, serif;
+                font-family: Georgia, 'Times New Roman', Times, serif;
                 font-weight: bold;
-                color: black;
+                color: rgb(0, 207, 62);
                 font-size: 225px;
                 text-align: center;
             }
             body {
-                margin: 0;
                 height: 100%;
                 background-repeat: no-repeat;
-                background-image: linear-gradient(to bottom right, rgb(102, 153, 204), rgb(0, 248, 207));;
-                /* background-image: linear-gradient(to bottom right, rgb(30, 215, 76), yellow);; */
+                background-color: rgb(26, 26, 29);
             }
             .Enter_code {
-                border: none;
-                outline: none;
-                padding: 10px 20px;
-                border-radius: 10px;
                 color: white;
-                margin-bottom: 50px;
-                position: relative;
                 font-family: Georgia, serif;
-                color: black;
-                font-size: 75px;
+                font-size: 60px;
                 text-align: center;
-                text-decoration: none;
-                left: 31%;
+                position: absolute;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
             }
-            .input_val {
-                border: none;
-                outline: none;
-                padding: 10px 20px;
-                border-radius: 10px;
-                /* background-color: rgb(31, 107, 31); */
+            .input {
                 background: rgb(26, 52, 78);
-                margin-bottom: 50px;
-                position: relative;
                 font-family: Georgia, serif;
                 color: white;
-                font-size: 75px;
-                text-align: center;
-                text-decoration: none;
-                left: 27.5%;
             }
-            .buttons {
-                border: none;
-                outline: none;
-                padding: 10px 20px;
-                border-radius: 10px;
-                color: white;
-                /* background: rgb(1, 53, 1); */
-                background: rgb(26, 52, 78);
-                margin-bottom: 50px;
-                box-shadow: 0 3px 20px 0 #0000003b;
-                position: relative;
-                left: 45.4%;
-                font-family: Georgia, serif;
-                color: white;
-                font-size: 75px;
-                text-align: center;
-                text-decoration: none;
+            .button {
+                position: absolute;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
             }
         </style>
     </head>
@@ -76,11 +48,17 @@
     <body>
         <form action="" method="post">
             {% csrf_token %}
-            <label for="code" class="Enter_code">Enter 4 Letter Code:</label>
-            <br><br><br>
-            <input class="input_val" id="code" type="text" name="code" value="{{ code }}" maxlength="4">
-            <br><br>
-            <input type="submit" value="Join" class="buttons">
+            <label for="code" class="Enter_code title is-2">Enter 4 Letter Code</label>
+            <br><br><br> <br>
+
+            <div class="columns">
+                <div class="column is-one-third"></div>     
+            <div class="column"><input class="input_val input is-focused is-medium is-primary" id="code" type="text" name="code" value="{{ code }}" maxlength="4"></div>
+                <div class="column is-one-third"></div>
+              </div>
+              
+            <br><br><br><br>
+           <input type="submit" value="Join" class= "button is-large is-success">
         </form>
     </body>
 </html>

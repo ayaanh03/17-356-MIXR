@@ -1,21 +1,11 @@
 {% for k, v in results.items%}
-<li style="
-        color: black;
-        font-family: Georgia, serif;
-        font-size: 25px;
-        text-align: left;
-        position: relative;
-        left: 990px;
-        top: 390px;
-    ">
-    
-    
-    {{k}}<button type="button" onClick="$.ajax({
+<li style="color: blanchedalmond; margin: auto;">
+    {{k}} &nbsp;<button class="button is-success is-rounded is-small" onClick="$.ajax({
     type: 'GET',
     url: '/update_playlist/{{code}}/{{v}}/up/{{host}}',
     success: function() {
     }
-})">+</button><button type="button" onClick="$.ajax({
+})">+</button><button class="button is-danger is-rounded is-small" onClick="$.ajax({
     type: 'GET',
     url: '/update_playlist/{{code}}/{{v}}/down/{{host}}',
     success: function() {
@@ -23,4 +13,3 @@
 })">-</button></li>
 {%endfor%}
 
-<!-- <l1>testval</l1> -->

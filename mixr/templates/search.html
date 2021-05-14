@@ -1,10 +1,10 @@
 
 {% for k,v in songs.items%}
-<li onclick="$.ajax({
+<li class="menu-list" onclick="$.ajax({
     type: 'GET',
     url: '/add/{{code}}/{{k}}/',
     success: function() {
     }
-})">{{v}}</li>
+})" ><a style="color: green;">{{v}}</a></li>
 
 {%endfor%}
