@@ -1,5 +1,16 @@
 {% for k, v in results.items%}
-<li>{{k}}<button type="button" onClick="$.ajax({
+<li style="
+        color: black;
+        font-family: Georgia, serif;
+        font-size: 25px;
+        text-align: left;
+        position: relative;
+        left: 990px;
+        top: 390px;
+    ">
+    
+    
+    {{k}}<button type="button" onClick="$.ajax({
     type: 'GET',
     url: '/update_playlist/{{code}}/{{v}}/up/{{host}}',
     success: function() {
